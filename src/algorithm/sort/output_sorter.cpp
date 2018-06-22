@@ -137,16 +137,17 @@ bool OutputSorter::sortMerge(const std::string& inputFile, const std::string& de
 	if(!SILENT)
 		std::cerr << helpers::timestamp("LOG", "SORT") << "Opening " << n_toi_entries << " file handles...";
 
+    std::ifstream* stream; stream->open(inputFile);
 	for(U32 i = 0; i < n_toi_entries; ++i){
 		//std::cerr << i << "/" << n_toi_entries << " -> " << this->reader.getIndex().getContainer()[i].byte_offset << "-" << this->reader.getIndex().getContainer()[i].byte_offset_end << std::endl;
 
-		streams[i].open(inputFile);
-		streams[i].seekg(this->reader.getIndex().getContainer()[i].byte_offset);
+		//streams[i].open(inputFile);
+		//streams[i].seekg(this->reader.getIndex().getContainer()[i].byte_offset);
 		if(streams[i].good() == false){
 			std::cerr << helpers::timestamp("ERROR","IO") << "Failed to open and seek in file..." << std::endl;
 			return false;
 		}
-		iterators[i] = new tgzf_iterator(streams[i],
+		iterators[i] = new tgzf_iterator(*stream, //s[i],
 		                                 100,
 		                                 this->reader.getIndex().getContainer()[i].byte_offset,
 		                                 this->reader.getIndex().getContainer()[i].byte_offset_end);
