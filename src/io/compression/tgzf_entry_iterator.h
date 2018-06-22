@@ -44,7 +44,9 @@ TGZFEntryIterator<T>::TGZFEntryIterator(std::ifstream& stream, const U32 n_entri
 	stream(stream),
 	output_buffer(n_entries*sizeof(T)),
 	entries(nullptr)
-{}
+{
+    this->stream.seekg(this->IO_start_offset, std::ios::cur);
+}
 
 template <class T>
 TGZFEntryIterator<T>::TGZFEntryIterator(std::ifstream& stream, const U32 n_entries, const U64 from, const U64 to) :
@@ -58,6 +60,7 @@ TGZFEntryIterator<T>::TGZFEntryIterator(std::ifstream& stream, const U32 n_entri
 	entries(nullptr)
 {
 	//std::cerr << "init to: " << n_entries*sizeof(T) << std::endl;
+    this->stream.seekg(this->IO_start_offset, std::ios::cur);
 }
 
 template <class T>
